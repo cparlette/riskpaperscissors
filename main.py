@@ -20,7 +20,7 @@ def main():
 	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (4 * HEIGHT / 5))
  
 	### Game Init ###
-	risk = Risk()
+	risk = Risk(screen)
 	rps = RPS(screen)
 	game = None
 
