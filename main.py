@@ -21,7 +21,7 @@ def main():
  
 	### Game Init ###
 	risk = Risk()
-	rps = RPS()
+	rps = RPS(screen)
 	game = None
 
 	# Assign starting menu (set to None for no starting menu)
