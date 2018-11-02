@@ -1,5 +1,5 @@
 # riskpaperscissors
-Combination of Risk and Rock Paper Scissors for #GitHubGameOff for November 2018
+Combination of Risk and Rock Paper Scissors for #GitHubGameOff for November 2018.  The theme of [GameOff2018](https://itch.io/jam/game-off-2018) is "hybrid".
 
 ## Prerequisites
 RiskPaperScissors requires Python3 and Pygame to operate.
