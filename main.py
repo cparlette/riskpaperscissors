@@ -37,39 +37,49 @@ def main():
 			if event.type == pygame.QUIT:  # window is closed
 				done = True
  
-			elif event.type == pygame.KEYDOWN:
-				# press esc key to return to main menu
-				if event.key == pygame.K_ESCAPE:
-					if menu == main_menu:
+			elif menu:
+				if event.type == pygame.KEYDOWN:
+					# press esc key to return to main menu
+					if event.key == pygame.K_ESCAPE:
+						if menu == main_menu:
+							done = True
+						else:
+							menu = main_menu
+				elif event.type == pygame.MOUSEBUTTONUP and menu:
+					action = menu.is_button_clicked(mouse_pos)
+					if action == "Quit":
+						done = True
+					elif action == "Risk":
 						menu = None
-					else:
+						game = risk
+					elif action == "RPS":
+						menu = None
+						game = rps
+					elif action == "Main Menu":
 						menu = main_menu
-			elif event.type == pygame.MOUSEBUTTONUP and menu:
-				action = menu.is_button_clicked(mouse_pos)
-				if action == "Quit":
-					done = True
-				elif action == "Risk":
-					menu = None
-					game = risk
-				elif action == "RPS":
-					menu = None
-					game = rps
-				elif action == "Main Menu":
-					menu = main_menu
+			else:
+				# we're in a game
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						# go back to the main menu
+						game = None
+						menu = main_menu
+					else:
+						# pass the key to the game
+						game.process_keydown(event.key)
+				else:
+					# mouse input
+					# maybe add processing here, for now just keyboard
+					pass
  
-		if not menu:
-			#---- game update code ----#
-			pass
- 
-		### Draw  Game ###
+		### Draw screen ###
 		screen.fill(WHITE)  # clear screen
  
 		# check if there is currently a menu selected
 		if menu:
 			menu.draw()
 		else:
-			#---- game draw code ----#
-			pass
+			game.draw()
  
 		# display the screen
 		pygame.display.flip()

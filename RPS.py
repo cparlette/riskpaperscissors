@@ -6,7 +6,7 @@ class RPS():
 		#do stuff
 		pass
 
-	def draw():
+	def draw(self):
 		#draw
 		pass
 	

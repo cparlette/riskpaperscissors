@@ -6,6 +6,6 @@ class Risk():
 		#do stuff
 		pass
 
-	def draw():
+	def draw(self):
 		#draw
 		pass
