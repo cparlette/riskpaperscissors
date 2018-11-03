@@ -2,25 +2,24 @@ from constants import *
 import pygame
 
 class Location():
-	def __init__(self, risk_game, text, center_x, center_y, name, width, height):
-		self.text = text
+	def __init__(self, risk_game, center_x, center_y, name):
+		self.armies = "0"
 		self.bg_color = WHITE
 		self.center_x = center_x
 		self.center_y = center_y
 		self.name = name
-		self.width = width
-		self.height = height
+		self.width = 30
+		self.height = 30
 		self.risk_game = risk_game
 		self.text_color = BLACK
-		self.font_size = int(height / 2)
+		self.font_size = int(self.height * 3 / 4)
 		self.font = pygame.font.SysFont("tahoma", self.font_size)
-		self.surface = pygame.Surface((width, height))
+		self.surface = pygame.Surface((self.width, self.height))
 		self.draw()
 
 	def insert_text(self):
-		""" Insert text onto button surface """
-		text_render = self.font.render(self.text, 1, self.text_color)
-		text_render_size = self.font.size(self.text)
+		text_render = self.font.render(self.armies, 1, self.text_color)
+		text_render_size = self.font.size(self.armies)
 		x_offset = text_render_size[0] / 2
 		y_offset = text_render_size[1] / 2
 		self.surface.blit(

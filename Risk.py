@@ -11,7 +11,7 @@ class Risk():
 			(1000,692)
 		)
 		self.locations = []
-		self.locations.append(Location(self,"1",75,108,"Alaska",13,13))
+		self.locations.append(Location(self,80,112,"Alaska"))
 
 	def process_keydown(self, key):
 		pass
