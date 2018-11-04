@@ -2,7 +2,8 @@ from constants import *
 import pygame
 
 class Location():
-	def __init__(self, risk_game, center_x, center_y, name):
+	def __init__(self, risk_game, location_id, center_x, center_y, name):
+		self.location_id = location_id
 		self.armies = "0"
 		self.bg_color = WHITE
 		self.center_x = center_x
