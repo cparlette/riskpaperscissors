@@ -66,6 +66,9 @@ class RPS():
 		if self.player_one.choice and self.player_two.choice:
 			self.showdown()
 
+	def process_mouseclick(self, mouse_pos):
+		# no mouse in RPS (yet)
+		pass
 
 	def draw(self):
 		self.surface.fill(GREEN)

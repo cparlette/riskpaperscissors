@@ -61,7 +61,15 @@ class Risk():
 		self.locations.append(Location(self,42,910,462,"New Guinea",[39,40,41]))
 
 	def process_keydown(self, key):
+		# Not sure how keyboard will interact yet, so just do nothing for now
 		pass
+
+	def process_mouseclick(self, mouse_pos):
+		# mouse was clicked, do something
+		for location in self.locations:
+			if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+				location.armies += 1
+				location.bg_color = BLUE
 
 	def draw(self):
 		self.surface.fill(SHADOW)

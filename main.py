@@ -67,9 +67,11 @@ def main():
 					else:
 						# pass the key to the game
 						game.process_keydown(event.key)
+				elif event.type == pygame.MOUSEBUTTONUP:
+					# pass mouse position into the game
+					game.process_mouseclick(mouse_pos)
 				else:
-					# mouse input
-					# maybe add processing here, for now just keyboard
+					# anything but a keyboard press or mouse click
 					pass
  
 		### Draw screen ###
