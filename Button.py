@@ -29,8 +29,7 @@ class Button():
         text_render_size = self.font.size(self.text)
         x_offset = text_render_size[0] / 2
         y_offset = text_render_size[1] / 2
-        self.surface.blit(text_render, (self.surface.get_width(
-        ) / 2 - x_offset, self.surface.get_height() / 2 - y_offset))
+        self.surface.blit(text_render, (self.surface.get_width() / 2 - x_offset, self.surface.get_height() / 2 - y_offset))
  
     def is_hovered(self, mx, my):
         if (mx > self.center_x - self.width / 2 and mx < self.center_x + self.width / 2):
@@ -43,6 +42,5 @@ class Button():
     def draw(self):
         self.surface.fill(self.bg_color)
         self.insert_text()
-        self.menu.surface.blit(
-            self.surface, (self.center_x - self.width / 2, self.center_y - self.height / 2))
+        self.menu.surface.blit(self.surface, (self.center_x - self.width / 2, self.center_y - self.height / 2))
  

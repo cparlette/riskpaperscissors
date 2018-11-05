@@ -11,6 +11,9 @@ class Risk():
 			(1000,692)
 		)
 		self.locations = []
+		# Locations below are in the format:
+		# location_id, center_x, center_y, name, neighbors
+		
 		# North America
 		self.locations.append(Location(self,1,80,112,"Alaska",[2,3,32]))
 		self.locations.append(Location(self,2,168,112,"NW Territory",[1,3,4,6]))

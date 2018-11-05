@@ -1,6 +1,5 @@
 import pygame
 from Menu import Menu
-from Button import Button
 from constants import *
 from Risk import Risk
 from RPS import RPS
@@ -14,7 +13,6 @@ def main():
 
 	### Menu Creation ###
 	main_menu = Menu(screen, "Risk Paper Scissors!", WHITE, "tahoma", BLACK)
-
 	main_menu.add_button("Risk", 200, 100, WHITE, str("Risk"), BLACK, WIDTH / 2, (2 * HEIGHT / 5))
 	main_menu.add_button("RPS", 200, 100, WHITE, str("RPS"), BLACK, WIDTH / 2, (3 * HEIGHT / 5))
 	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (4 * HEIGHT / 5))

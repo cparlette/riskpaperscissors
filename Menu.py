@@ -17,8 +17,7 @@ class Menu():
  
     def add_button(self, action, width, height, bg_color, text, text_color, center_x, center_y):
         """ Add a button to the menu """
-        new_button = Button(self, action, width, height, bg_color,
-                            text, self.font_type, text_color, center_x, center_y)
+        new_button = Button(self, action, width, height, bg_color, text, self.font_type, text_color, center_x, center_y)
         self.buttons.append(new_button)
  
     def is_button_clicked(self, mouse_pos):
