@@ -3,13 +3,41 @@ import pygame
 from Location import Location
 
 class Risk_Player():
-	def __init__(self, player_id, name, color):
+	def __init__(self, risk_game, player_id, name, color, center_x, center_y):
 		self.total_armies = 0
 		self.total_locations = 0
 		self.player_id = player_id
 		self.name = name
 		self.color = color
 		self.controlled_locations = []
+		self.risk_game = risk_game
+		self.center_x = center_x
+		self.center_y = center_y
+		self.width = 500
+		self.height = 158
+		self.text_color = BLACK
+		self.font_size = int(self.height * 1 / 4)
+		self.font = pygame.font.SysFont("tahoma", self.font_size)
+		self.surface = pygame.Surface((self.width, self.height))
+		self.draw()
+
+	def insert_text(self):
+		text_render = self.font.render(self.name, 1, self.text_color)
+		text_render_size = self.font.size(self.name)
+		x_offset = text_render_size[0] / 2
+		y_offset = text_render_size[1] / 2
+		self.surface.blit(
+			text_render, 
+			(self.surface.get_width() / 2 - x_offset, self.surface.get_height() / 2 - y_offset)
+		)
+
+	def draw(self):
+		self.surface.fill(self.color)
+		self.insert_text()
+		self.risk_game.surface.blit(
+			self.surface, 
+			(self.center_x - self.width / 2, self.center_y - self.height / 2)
+		)
 
 class Risk():
 	def __init__(self, screen):
@@ -74,8 +102,8 @@ class Risk():
 
 		# Set up players, 2 for now
 		self.players = {}
-		self.players[1] = Risk_Player(1, "Player1", LIGHTBLUE)
-		self.players[2] = Risk_Player(2, "Player2", RED)
+		self.players[1] = Risk_Player(self, 1, "Player1", LIGHTBLUE, 250, 771)
+		self.players[2] = Risk_Player(self, 2, "Player2", RED, 750, 771)
 		self.current_player = 1
 
 	def process_keydown(self, key):
@@ -107,8 +135,14 @@ class Risk():
 
 
 	def draw(self):
+		# Fill in background color
 		self.surface.fill(SHADOW)
+		# Draw risk map
 		self.surface.blit(self.img,(0,0))
+		# Draw each location square
 		for key, location in self.locations.items():
 			location.draw()
+		# Draw player stats
+		for key, player in self.players.items():
+			player.draw()
 		self.screen.blit(self.surface, (0, 0))
