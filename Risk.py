@@ -2,6 +2,7 @@ from constants import *
 import pygame
 from Location import Location
 from Risk_Player import Risk_Player
+from Risk_Game_State_Display import Risk_Game_State_Display
 
 
 class Risk():
@@ -67,9 +68,13 @@ class Risk():
 
 		# Set up players, 2 for now
 		self.players = {}
-		self.players[1] = Risk_Player(self, 1, "Player1", LIGHTBLUE, 250, 771)
-		self.players[2] = Risk_Player(self, 2, "Player2", RED, 750, 771)
+		self.players[1] = Risk_Player(self, 1, "Player1", LIGHTBLUE, 150, 771)
+		self.players[2] = Risk_Player(self, 2, "Player2", RED, 850, 771)
 		self.current_player = 1
+		self.game_phase = "Setup"
+
+		# Create the game state display
+		self.game_state_display = Risk_Game_State_Display(self)
 
 	def process_keydown(self, key):
 		# Not sure how keyboard will interact yet, so just do nothing for now
@@ -110,4 +115,6 @@ class Risk():
 		# Draw player stats
 		for key, player in self.players.items():
 			player.draw()
+		# Draw current game state
+		self.game_state_display.draw()
 		self.screen.blit(self.surface, (0, 0))

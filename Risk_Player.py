@@ -12,7 +12,7 @@ class Risk_Player():
 		self.risk_game = risk_game
 		self.center_x = center_x
 		self.center_y = center_y
-		self.width = 500
+		self.width = 300
 		self.height = 158
 		self.text_color = BLACK
 		self.font_size = int(self.height * 1 / 4)
