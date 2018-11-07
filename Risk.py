@@ -74,7 +74,7 @@ class Risk():
 
 		# Set up players, 2 for now
 		self.players = {}
-		self.players[1] = Risk_Player(1, "Player1", BLUE)
+		self.players[1] = Risk_Player(1, "Player1", LIGHTBLUE)
 		self.players[2] = Risk_Player(2, "Player2", RED)
 		self.current_player = 1
 
