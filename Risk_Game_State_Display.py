@@ -28,7 +28,7 @@ class Risk_Game_State_Display():
 		)
 
 		# Print current game phase
-		text = "Game Phase : " + self.risk_game.game_phase
+		text = self.risk_game.game_phase
 		text_render = self.font.render(text, 1, self.text_color)
 		text_render_size = self.font.size(text)
 		x_offset = text_render_size[0] / 2

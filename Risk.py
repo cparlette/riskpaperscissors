@@ -71,7 +71,7 @@ class Risk():
 		self.players[1] = Risk_Player(self, 1, "Player1", LIGHTBLUE, 150, 771)
 		self.players[2] = Risk_Player(self, 2, "Player2", RED, 850, 771)
 		self.current_player = 1
-		self.game_phase = "Setup"
+		self.game_phase = "Pick Starting Countries"
 
 		# Create the game state display
 		self.game_state_display = Risk_Game_State_Display(self)
@@ -88,20 +88,31 @@ class Risk():
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
-		for key, location in self.locations.items():
-			if location.is_hovered(mouse_pos[0], mouse_pos[1]):
-				if location.owner == self.current_player:
-					location.armies += 1
-					self.players[self.current_player].total_armies += 1
-					self.next_player()
-				elif location.owner == None:
-					location.bg_color = self.players[self.current_player].color
-					self.players[self.current_player].total_locations += 1
-					self.players[self.current_player].controlled_locations.append(location.location_id)
-					location.owner = self.current_player
-					location.armies += 1
-					self.players[self.current_player].total_armies += 1
-					self.next_player()			
+
+		# Logic during setup phase
+		if self.game_phase == "Pick Starting Countries":
+			for key, location in self.locations.items():
+				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+					if location.owner == None:
+						location.bg_color = self.players[self.current_player].color
+						self.players[self.current_player].total_locations += 1
+						self.players[self.current_player].controlled_locations.append(location.location_id)
+						location.owner = self.current_player
+						location.armies += 1
+						self.players[self.current_player].total_armies += 1
+						self.next_player()
+			if len(self.players[1].controlled_locations) + len(self.players[2].controlled_locations) == 42:
+				# All countries taken, start next phase
+				self.game_phase = "Allocate All Armies"
+		elif self.game_phase == "Allocate All Armies":
+			for key, location in self.locations.items():
+				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+					if location.owner == self.current_player:
+						location.armies += 1
+						self.players[self.current_player].total_armies += 1
+						self.next_player()
+			if self.players[2].total_armies == 50:
+				self.game_phase = "Begin Combat!"
 
 
 	def draw(self):
