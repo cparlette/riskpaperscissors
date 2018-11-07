@@ -22,13 +22,36 @@ class Risk_Player():
 		self.draw()
 
 	def insert_text(self):
+		# Print name
 		text_render = self.font.render(self.name, 1, self.text_color)
 		text_render_size = self.font.size(self.name)
 		x_offset = text_render_size[0] / 2
 		y_offset = text_render_size[1] / 2
 		self.surface.blit(
 			text_render, 
+			(self.surface.get_width() / 2 - x_offset, self.surface.get_height() / 4 - y_offset)
+		)
+
+		# Print total armies
+		text = "Total armies = " + str(self.total_armies)
+		text_render = self.font.render(text, 1, self.text_color)
+		text_render_size = self.font.size(text)
+		x_offset = text_render_size[0] / 2
+		y_offset = text_render_size[1] / 2
+		self.surface.blit(
+			text_render, 
 			(self.surface.get_width() / 2 - x_offset, self.surface.get_height() / 2 - y_offset)
+		)
+
+		# Print total locations
+		text = "Total territories = " + str(self.total_locations)
+		text_render = self.font.render(text, 1, self.text_color)
+		text_render_size = self.font.size(text)
+		x_offset = text_render_size[0] / 2
+		y_offset = text_render_size[1] / 2
+		self.surface.blit(
+			text_render, 
+			(self.surface.get_width() / 2 - x_offset, self.surface.get_height() * 3 / 4 - y_offset)
 		)
 
 	def draw(self):
