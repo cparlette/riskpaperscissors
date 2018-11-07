@@ -2,6 +2,15 @@ from constants import *
 import pygame
 from Location import Location
 
+class Risk_Player():
+	def __init__(self, player_id, name, color):
+		self.total_armies = 0
+		self.total_locations = 0
+		self.player_id = player_id
+		self.name = name
+		self.color = color
+		self.controlled_locations = []
+
 class Risk():
 	def __init__(self, screen):
 		self.screen = screen
@@ -63,16 +72,39 @@ class Risk():
 		self.locations[41] = Location(self,41,820,485,"Indonesia",[35,40,42])
 		self.locations[42] = Location(self,42,910,462,"New Guinea",[39,40,41])
 
+		# Set up players, 2 for now
+		self.players = {}
+		self.players[1] = Risk_Player(1, "Player1", BLUE)
+		self.players[2] = Risk_Player(2, "Player2", RED)
+		self.current_player = 1
+
 	def process_keydown(self, key):
 		# Not sure how keyboard will interact yet, so just do nothing for now
 		pass
+
+	def next_player(self):
+		if self.current_player == 1:
+			self.current_player = 2
+		else:
+			self.current_player = 1	
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
 		for key, location in self.locations.items():
 			if location.is_hovered(mouse_pos[0], mouse_pos[1]):
-				location.armies += 1
-				location.bg_color = BLUE
+				if location.owner == self.current_player:
+					location.armies += 1
+					self.players[self.current_player].total_armies += 1
+					self.next_player()
+				elif location.owner == None:
+					location.bg_color = self.players[self.current_player].color
+					self.players[self.current_player].total_locations += 1
+					self.players[self.current_player].controlled_locations.append(location.location_id)
+					location.owner = self.current_player
+					location.armies += 1
+					self.players[self.current_player].total_armies += 1
+					self.next_player()			
+
 
 	def draw(self):
 		self.surface.fill(SHADOW)

@@ -5,6 +5,7 @@ class Location():
 	def __init__(self, risk_game, location_id, center_x, center_y, name, neighbors):
 		self.location_id = location_id
 		self.armies = 0
+		self.owner = None
 		self.bg_color = WHITE
 		self.center_x = center_x
 		self.center_y = center_y
