@@ -3,6 +3,7 @@ import pygame
 from Location import Location
 from Risk_Player import Risk_Player
 from Risk_Game_State_Display import Risk_Game_State_Display
+import random
 
 
 class Risk():
@@ -77,14 +78,50 @@ class Risk():
 		self.game_state_display = Risk_Game_State_Display(self)
 
 	def process_keydown(self, key):
-		# Not sure how keyboard will interact yet, so just do nothing for now
-		pass
+		# When a key is pressed during Risk
+		# Mostly just for testing purposes, maybe can do more with this
+		if key == pygame.K_r:
+			# Check the game phase , if during setup then randomize things
+			if self.game_phase == "Pick Starting Countries" and self.players[1].total_locations == 0:
+				# Rancomly pick starting countries for each player
+				# First, make a shuffled list of locations
+				locations_list = []
+				for key, value in self.locations.items():
+					locations_list.append(value)
+				random.shuffle(locations_list)
+				# Iterate the shuffled list and pick the next one for the current player
+				for location in locations_list:
+					self.locations[location.location_id].bg_color = self.players[self.current_player].color
+					self.players[self.current_player].total_locations += 1
+					self.players[self.current_player].controlled_locations.append(location.location_id)
+					self.locations[location.location_id].owner = self.current_player
+					self.locations[location.location_id].armies += 1
+					self.players[self.current_player].total_armies += 1
+					self.next_player()
+				self.next_phase()
+			elif self.game_phase == "Allocate All Armies":
+				# Randomly allocate the rest of the armies for each player
+				while(self.players[2].total_armies < 50):
+					# Pick a random location from this player's list
+					random_location = random.choice(self.players[self.current_player].controlled_locations)
+					# Increment that location and the player's total armies
+					self.locations[random_location].armies += 1
+					self.players[self.current_player].total_armies += 1
+					
+					self.next_player()
+				self.next_phase()
 
 	def next_player(self):
 		if self.current_player == 1:
 			self.current_player = 2
 		else:
-			self.current_player = 1	
+			self.current_player = 1
+
+	def next_phase(self):
+		if self.game_phase == "Pick Starting Countries":
+			self.game_phase = "Allocate All Armies"
+		elif self.game_phase == "Allocate All Armies":
+			self.game_phase = "Begin Combat!"
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
@@ -103,7 +140,7 @@ class Risk():
 						self.next_player()
 			if len(self.players[1].controlled_locations) + len(self.players[2].controlled_locations) == 42:
 				# All countries taken, start next phase
-				self.game_phase = "Allocate All Armies"
+				self.next_phase()
 		elif self.game_phase == "Allocate All Armies":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
@@ -112,7 +149,7 @@ class Risk():
 						self.players[self.current_player].total_armies += 1
 						self.next_player()
 			if self.players[2].total_armies == 50:
-				self.game_phase = "Begin Combat!"
+				self.next_phase()
 
 
 	def draw(self):
