@@ -4,6 +4,7 @@ from Location import Location
 from Risk_Player import Risk_Player
 from Risk_Game_State_Display import Risk_Game_State_Display
 import random
+from RPS import RPS
 
 
 class Risk():
@@ -73,9 +74,14 @@ class Risk():
 		self.players[2] = Risk_Player(self, 2, "Player2", RED, 850, 771)
 		self.current_player = 1
 		self.game_phase = "Pick Starting Countries"
+		self.attacker = None
+		self.defender = None
 
 		# Create the game state display
 		self.game_state_display = Risk_Game_State_Display(self)
+
+		# Blank RPS game that will get created on the fly during battle
+		self.rps = None
 
 	def process_keydown(self, key):
 		# When a key is pressed during Risk
@@ -110,6 +116,8 @@ class Risk():
 					
 					self.next_player()
 				self.next_phase()
+		elif self.rps:
+			self.rps.process_keydown(key)
 
 	def next_player(self):
 		if self.current_player == 1:
@@ -121,12 +129,16 @@ class Risk():
 		if self.game_phase == "Pick Starting Countries":
 			self.game_phase = "Allocate All Armies"
 		elif self.game_phase == "Allocate All Armies":
-			self.game_phase = "Begin Combat!"
+			self.game_phase = "Choose Attacker"
+		elif self.game_phase == "Choose Attacker":
+			self.game_phase = "Choose Defender"
+		elif self.game_phase == "Choose Defender":
+			self.game_phase = "RPS"
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
 
-		# Logic during setup phase
+		# Logic during different phases
 		if self.game_phase == "Pick Starting Countries":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
@@ -150,19 +162,38 @@ class Risk():
 						self.next_player()
 			if self.players[2].total_armies == 50:
 				self.next_phase()
+		elif self.game_phase == "Choose Attacker":
+			for key, location in self.locations.items():
+				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+					self.attaker = location
+					self.next_phase()
+		elif self.game_phase == "Choose Defender":
+			for key, location in self.locations.items():
+				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+					self.defender = location
+					self.next_phase()
+					self.rps = RPS(self.screen)
+		elif self.game_phase == "RPS":
+			# Time to play RPS to see who wins
+			pass
+
+
 
 
 	def draw(self):
-		# Fill in background color
-		self.surface.fill(SHADOW)
-		# Draw risk map
-		self.surface.blit(self.img,(0,0))
-		# Draw each location square
-		for key, location in self.locations.items():
-			location.draw()
-		# Draw player stats
-		for key, player in self.players.items():
-			player.draw()
-		# Draw current game state
-		self.game_state_display.draw()
-		self.screen.blit(self.surface, (0, 0))
+		if self.rps:
+			self.rps.draw()
+		else:
+			# Fill in background color
+			self.surface.fill(SHADOW)
+			# Draw risk map
+			self.surface.blit(self.img,(0,0))
+			# Draw each location square
+			for key, location in self.locations.items():
+				location.draw()
+			# Draw player stats
+			for key, player in self.players.items():
+				player.draw()
+			# Draw current game state
+			self.game_state_display.draw()
+			self.screen.blit(self.surface, (0, 0))
