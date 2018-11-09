@@ -160,6 +160,14 @@ class Risk():
 		else:
 			self.current_player = 1
 
+	def check_if_game_over(self):
+		if self.players[1].total_locations == 0:
+			return True
+		elif self.players[2].total_locations == 0:
+			return True
+		else:
+			return False
+
 	def next_phase(self):
 		if self.game_phase == "Pick Starting Countries":
 			self.game_phase = "Allocate All Armies"
@@ -170,7 +178,10 @@ class Risk():
 		elif self.game_phase == "Choose Defender":
 			self.game_phase = "RPS"
 		elif self.game_phase == "RPS" and self.rps == None:
-			self.game_phase = "Choose Attacker"
+			if self.check_if_game_over():
+				self.game_phase = "Victory!"
+			else:
+				self.game_phase = "Choose Attacker"
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
