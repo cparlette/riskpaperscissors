@@ -118,6 +118,41 @@ class Risk():
 				self.next_phase()
 		elif self.rps:
 			self.rps.process_keydown(key)
+			# Check if the RPS game is over
+			if self.current_player == 1:
+				if self.rps.player_one.lives == 2:
+					# Player two wins as defender
+					self.attacker.armies = self.rps.player_one.lives
+					self.defender.armies = self.rps.player_two.lives
+					self.rps = None
+					self.next_phase()
+				elif self.rps.player_two.lives == 0:
+					# Player one wins as attacker
+					self.attacker.armies = 1
+					self.defender.armies = self.rps.player_one.lives - 1
+					self.defender.owner = self.current_player
+					self.defender.bg_color = self.players[1].color
+					self.players[1].total_locations += 1
+					self.players[2].total_locations -= 1
+					self.rps = None
+					self.next_phase()
+			else:
+				if self.rps.player_one.lives < 1:
+					# Player two wins as attacker
+					self.attacker.armies = 1
+					self.defender.armies = self.rps.player_one.lives - 1
+					self.defender.owner = self.current_player
+					self.defender.bg_color = self.players[2].color
+					self.players[2].total_locations += 1
+					self.players[1].total_locations -= 1
+					self.rps = None
+					self.next_phase()
+				elif self.rps.player_two.lives == 2:
+					# Player one wins as defender
+					self.attacker.armies = self.rps.player_two.lives
+					self.defender.armies = self.rps.player_one.lives
+					self.rps = None
+					self.next_phase()
 
 	def next_player(self):
 		if self.current_player == 1:
@@ -134,6 +169,8 @@ class Risk():
 			self.game_phase = "Choose Defender"
 		elif self.game_phase == "Choose Defender":
 			self.game_phase = "RPS"
+		elif self.game_phase == "RPS" and self.rps == None:
+			self.game_phase = "Choose Attacker"
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
@@ -165,14 +202,19 @@ class Risk():
 		elif self.game_phase == "Choose Attacker":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
-					self.attaker = location
-					self.next_phase()
+					if location.owner == self.current_player:
+						self.attacker = location
+						self.next_phase()
 		elif self.game_phase == "Choose Defender":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
-					self.defender = location
-					self.next_phase()
-					self.rps = RPS(self.screen)
+					if location.owner != self.current_player:
+						self.defender = location
+						self.next_phase()
+						if self.current_player == 1:
+							self.rps = RPS(self.screen, self.attacker.armies, self.defender.armies)
+						else:
+							self.rps = RPS(self.screen, self.defender.armies, self.attacker.armies)
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins
 			pass

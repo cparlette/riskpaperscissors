@@ -23,26 +23,26 @@ class RPS():
 				self.last_result = "Tie - both chose rock"
 			elif self.player_two.choice == "paper":
 				self.last_result = "Player 2 wins - P over R"
-				self.player_two.lives -= 1
+				self.player_one.lives -= 1
 			else:
 				self.last_result = "Player 1 wins - R over S"
-				self.player_one.lives -= 1
+				self.player_two.lives -= 1
 		elif self.player_one.choice == "paper":
 			if self.player_two.choice == "rock":
 				self.last_result = "Player 1 wins - P over R"
-				self.player_one.lives -= 1
+				self.player_two.lives -= 1
 			elif self.player_two.choice == "paper":
 				self.last_result = "Tie - both chose paper"
 			else:
 				self.last_result = "Player 2 wins - S over P"
-				self.player_two.lives -= 1
+				self.player_one.lives -= 1
 		else:
 			if self.player_two.choice == "rock":
 				self.last_result = "Player 2 wins - R over S"
-				self.player_two.lives -= 1
+				self.player_one.lives -= 1
 			elif self.player_two.choice == "paper":
 				self.last_result = "Player 1 wins - S over P"
-				self.player_one.lives -= 1
+				self.player_two.lives -= 1
 			else:
 				self.last_result = "Tie - both chose scissors"
 		self.player_one.choice = None
