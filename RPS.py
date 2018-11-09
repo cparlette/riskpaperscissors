@@ -2,16 +2,16 @@ from constants import *
 import pygame
 
 class Player():
-	def __init__(self):
+	def __init__(self, lives):
 		self.choice = None
-		self.wins = 0
+		self.lives = lives
 
 class RPS():
-	def __init__(self, screen):
+	def __init__(self, screen, player_one_lives, player_two_lives):
 		self.screen = screen
 		self.surface = pygame.Surface((WIDTH, HEIGHT))
-		self.player_one = Player()
-		self.player_two = Player()
+		self.player_one = Player(player_one_lives)
+		self.player_two = Player(player_two_lives)
 		self.last_result = None
 		#font stuff
 		self.font_type = "tahoma"
@@ -23,26 +23,26 @@ class RPS():
 				self.last_result = "Tie - both chose rock"
 			elif self.player_two.choice == "paper":
 				self.last_result = "Player 2 wins - P over R"
-				self.player_two.wins += 1
+				self.player_two.lives -= 1
 			else:
 				self.last_result = "Player 1 wins - R over S"
-				self.player_one.wins += 1
+				self.player_one.lives -= 1
 		elif self.player_one.choice == "paper":
 			if self.player_two.choice == "rock":
 				self.last_result = "Player 1 wins - P over R"
-				self.player_one.wins += 1
+				self.player_one.lives -= 1
 			elif self.player_two.choice == "paper":
 				self.last_result = "Tie - both chose paper"
 			else:
 				self.last_result = "Player 2 wins - S over P"
-				self.player_two.wins += 1
+				self.player_two.lives -= 1
 		else:
 			if self.player_two.choice == "rock":
 				self.last_result = "Player 2 wins - R over S"
-				self.player_two.wins += 1
+				self.player_two.lives -= 1
 			elif self.player_two.choice == "paper":
 				self.last_result = "Player 1 wins - S over P"
-				self.player_one.wins += 1
+				self.player_one.lives -= 1
 			else:
 				self.last_result = "Tie - both chose scissors"
 		self.player_one.choice = None
@@ -96,14 +96,14 @@ class RPS():
 		player_one_center_y = HEIGHT / 2 - y_offset
 		self.surface.blit(text_one, (player_one_center_x, player_one_center_y))
 
-		player_one_wins_text = "Wins: "+str(self.player_one.wins)
-		text_one_wins = font.render(player_one_wins_text, 1, BLUE)
-		render_size = font.size(player_one_wins_text)
+		player_one_lives_text = "Lives: "+str(self.player_one.lives)
+		text_one_lives = font.render(player_one_lives_text, 1, BLUE)
+		render_size = font.size(player_one_lives_text)
 		x_offset = render_size[0] / 2
 		y_offset = render_size[1] / 2
-		player_one_wins_center_x = WIDTH / 4 - x_offset
-		player_one_wins_center_y = HEIGHT * 5 / 8 - y_offset
-		self.surface.blit(text_one_wins, (player_one_wins_center_x, player_one_wins_center_y))
+		player_one_lives_center_x = WIDTH / 4 - x_offset
+		player_one_lives_center_y = HEIGHT * 5 / 8 - y_offset
+		self.surface.blit(text_one_lives, (player_one_lives_center_x, player_one_lives_center_y))
 
 		# player two info
 		if self.player_two.choice:
@@ -118,14 +118,14 @@ class RPS():
 		player_two_center_y = HEIGHT / 2 - y_offset
 		self.surface.blit(text_two, (player_two_center_x, player_two_center_y))
 
-		player_two_wins_text = "Wins: "+str(self.player_two.wins)
-		text_two_wins = font.render(player_two_wins_text, 1, RED)
-		render_size = font.size(player_two_wins_text)
+		player_two_lives_text = "Lives: "+str(self.player_two.lives)
+		text_two_lives = font.render(player_two_lives_text, 1, RED)
+		render_size = font.size(player_two_lives_text)
 		x_offset = render_size[0] / 2
 		y_offset = render_size[1] / 2
-		player_two_wins_center_x = WIDTH * 3 / 4 - x_offset
-		player_two_wins_center_y = HEIGHT * 5 / 8 - y_offset
-		self.surface.blit(text_two_wins, (player_two_wins_center_x, player_two_wins_center_y))
+		player_two_lives_center_x = WIDTH * 3 / 4 - x_offset
+		player_two_lives_center_y = HEIGHT * 5 / 8 - y_offset
+		self.surface.blit(text_two_lives, (player_two_lives_center_x, player_two_lives_center_y))
 
 		#results
 		if self.last_result:
