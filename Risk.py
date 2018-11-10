@@ -134,6 +134,8 @@ class Risk():
 					self.defender.bg_color = self.players[1].color
 					self.players[1].total_locations += 1
 					self.players[2].total_locations -= 1
+					self.players[1].controlled_locations.append(self.defender.location_id)
+					self.players[2].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
 					self.next_phase()
 			else:
@@ -145,6 +147,8 @@ class Risk():
 					self.defender.bg_color = self.players[2].color
 					self.players[2].total_locations += 1
 					self.players[1].total_locations -= 1
+					self.players[2].controlled_locations.append(self.defender.location_id)
+					self.players[1].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
 					self.next_phase()
 				elif self.rps.player_two.lives == 2:
@@ -168,6 +172,13 @@ class Risk():
 		else:
 			return False
 
+	def update_armies_count(self):
+		for key, player in self.players.items():
+			armies = 0
+			for location in player.controlled_locations:
+				armies += self.locations[location].armies
+			player.total_armies = armies
+
 	def next_phase(self):
 		if self.game_phase == "Pick Starting Countries":
 			self.game_phase = "Allocate All Armies"
@@ -181,6 +192,7 @@ class Risk():
 			if self.check_if_game_over():
 				self.game_phase = "Victory!"
 			else:
+				self.update_armies_count()
 				self.game_phase = "Choose Attacker"
 
 	def process_mouseclick(self, mouse_pos):
