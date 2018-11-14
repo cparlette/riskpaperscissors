@@ -5,6 +5,7 @@ from Risk_Player import Risk_Player
 from Risk_Game_State_Display import Risk_Game_State_Display
 import random
 from RPS import RPS
+from Button import Button
 
 
 class Risk():
@@ -82,6 +83,9 @@ class Risk():
 
 		# Blank RPS game that will get created on the fly during battle
 		self.rps = None
+
+		# End turn button
+		self.end_turn_button = Button(self, "End Turn", 100, 50, WHITE, str("End Turn"), "tahoma", BLACK, 50, 667)
 
 	def process_keydown(self, key):
 		# When a key is pressed during Risk
@@ -261,4 +265,8 @@ class Risk():
 				player.draw()
 			# Draw current game state
 			self.game_state_display.draw()
+			# Draw end turn button
+			mouse_pos = pygame.mouse.get_pos()
+			self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1])
+			self.end_turn_button.draw()
 			self.screen.blit(self.surface, (0, 0))
