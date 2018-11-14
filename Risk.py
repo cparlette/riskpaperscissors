@@ -232,6 +232,8 @@ class Risk():
 					if location.owner == self.current_player:
 						self.attacker = location
 						self.next_phase()
+			if self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1]):
+				self.next_player()
 		elif self.game_phase == "Choose Defender":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
@@ -269,4 +271,5 @@ class Risk():
 			mouse_pos = pygame.mouse.get_pos()
 			self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1])
 			self.end_turn_button.draw()
+			
 			self.screen.blit(self.surface, (0, 0))
