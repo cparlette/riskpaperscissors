@@ -3,13 +3,16 @@ from Menu import Menu
 from constants import *
 from Risk import Risk
 from RPS import RPS
-
+from RPS_Music import RPS_Music
 
 def main():
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
 	pygame.display.set_caption("Risk Paper Scissors")
 	done = False
 	clock = pygame.time.Clock()
+
+	music = RPS_Music()
+	music.play()
 
 	### Menu Creation ###
 	main_menu = Menu(screen, "Risk Paper Scissors!", WHITE, "tahoma", BLACK)
