@@ -150,7 +150,7 @@ class Risk():
 				if self.rps.player_one.lives < 1:
 					# Player two wins as attacker
 					self.attacker.armies = 1
-					self.defender.armies = self.rps.player_one.lives - 1
+					self.defender.armies = self.rps.player_two.lives - 1
 					self.defender.owner = self.current_player
 					self.defender.bg_color = self.players[2].color
 					self.players[2].total_locations += 1
