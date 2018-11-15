@@ -87,6 +87,10 @@ class Risk():
 		# End turn button
 		self.end_turn_button = Button(self, "End Turn", 100, 50, WHITE, str("End Turn"), "tahoma", BLACK, 50, 667)
 
+		# Placable armies that gets populated for each new turn
+		self.placable_armies = 0
+
+
 	def process_keydown(self, key):
 		# When a key is pressed during Risk
 		# Mostly just for testing purposes, maybe can do more with this
@@ -198,6 +202,13 @@ class Risk():
 			else:
 				self.update_armies_count()
 				self.game_phase = "Choose Attacker"
+		elif self.game_phase == "Place New Armies":
+			self.game_phase = "Choose Attacker"
+
+	def new_turn(self):
+		self.next_player()
+		self.placable_armies = 5
+		self.game_phase = "Place New Armies"
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
@@ -233,7 +244,7 @@ class Risk():
 						self.attacker = location
 						self.next_phase()
 			if self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1]):
-				self.next_player()
+				self.new_turn()
 		elif self.game_phase == "Choose Defender":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
@@ -247,6 +258,15 @@ class Risk():
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins
 			pass
+		elif self.game_phase == "Place New Armies":
+			for key, location in self.locations.items():
+				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
+					if location.owner == self.current_player:
+						location.armies += 1
+						self.players[self.current_player].total_armies += 1
+						self.placable_armies -= 1
+			if self.placable_armies == 0:
+				self.next_phase()
 
 
 
