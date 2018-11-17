@@ -6,7 +6,7 @@ class Risk_Game_State_Display():
 		self.risk_game = risk_game
 		self.width = 400
 		self.height = 158
-		self.bg_color = SHADOW
+		self.bg_color = WHITE
 		self.text_color = BLACK
 		self.center_x = 500
 		self.center_y = 771
