@@ -42,6 +42,8 @@ class Risk_Game_State_Display():
 		situational_text = None
 		if self.risk_game.game_phase == "Place New Armies":
 			situational_text = "Remaining armies: "+str(self.risk_game.placable_armies)
+		elif self.risk_game.situational_text:
+			situational_text = self.risk_game.situational_text
 		if situational_text:
 			text_render = self.font.render(situational_text, 1, self.text_color)
 			text_render_size = self.font.size(situational_text)

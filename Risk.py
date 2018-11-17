@@ -78,6 +78,9 @@ class Risk():
 		self.attacker = None
 		self.defender = None
 
+		# Text that can be used in the bottom-middle display
+		self.situational_text = None
+
 		# Create the game state display
 		self.game_state_display = Risk_Game_State_Display(self)
 
@@ -205,6 +208,9 @@ class Risk():
 		elif self.game_phase == "Place New Armies":
 			self.game_phase = "Choose Attacker"
 
+		# Always clean out the situational text when changing phases
+		self.situational_text = None
+
 	def new_turn(self):
 		self.next_player()
 		self.placable_armies = 5
@@ -235,6 +241,8 @@ class Risk():
 						location.armies += 1
 						self.players[self.current_player].total_armies += 1
 						self.next_player()
+					else:
+						self.situational_text = "Not your territory!"
 			if self.players[2].total_armies == 50:
 				self.next_phase()
 		elif self.game_phase == "Choose Attacker":
@@ -243,6 +251,8 @@ class Risk():
 					if location.owner == self.current_player:
 						self.attacker = location
 						self.next_phase()
+					else:
+						self.situational_text = "Not your territory!"
 			if self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1]):
 				self.new_turn()
 		elif self.game_phase == "Choose Defender":
@@ -256,6 +266,10 @@ class Risk():
 								self.rps = RPS(self.screen, self.attacker.armies, self.defender.armies)
 							else:
 								self.rps = RPS(self.screen, self.defender.armies, self.attacker.armies)
+						else:
+							self.situational_text = "Not a connected territory"
+					else:
+						self.situational_text = "Can't attack yourself!"
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins
 			pass
