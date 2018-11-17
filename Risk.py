@@ -87,8 +87,9 @@ class Risk():
 		# Blank RPS game that will get created on the fly during battle
 		self.rps = None
 
-		# End turn button
+		# End turn and undo buttons
 		self.end_turn_button = Button(self, "End Turn", 100, 50, WHITE, str("End Turn"), "tahoma", BLACK, 50, 667)
+		self.undo_button = Button(self, "Undo", 100, 50, WHITE, str("Undo"), "tahoma", BLACK, 200, 667)
 
 		# Placable armies that gets populated for each new turn
 		self.placable_armies = 0
@@ -270,6 +271,9 @@ class Risk():
 							self.situational_text = "Not a connected territory"
 					else:
 						self.situational_text = "Can't attack yourself!"
+			if self.undo_button.is_hovered(mouse_pos[0], mouse_pos[1]):
+				self.game_phase = "Choose Attacker"
+				self.attacker = None
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins
 			pass
@@ -302,9 +306,11 @@ class Risk():
 				player.draw()
 			# Draw current game state
 			self.game_state_display.draw()
-			# Draw end turn button
+			# Draw buttons
 			mouse_pos = pygame.mouse.get_pos()
 			self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1])
 			self.end_turn_button.draw()
+			self.undo_button.is_hovered(mouse_pos[0], mouse_pos[1])
+			self.undo_button.draw()
 			
 			self.screen.blit(self.surface, (0, 0))
