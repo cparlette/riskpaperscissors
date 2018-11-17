@@ -249,12 +249,13 @@ class Risk():
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
 					if location.owner != self.current_player:
-						self.defender = location
-						self.next_phase()
-						if self.current_player == 1:
-							self.rps = RPS(self.screen, self.attacker.armies, self.defender.armies)
-						else:
-							self.rps = RPS(self.screen, self.defender.armies, self.attacker.armies)
+						if location.location_id in self.attacker.neighbors:
+							self.defender = location
+							self.next_phase()
+							if self.current_player == 1:
+								self.rps = RPS(self.screen, self.attacker.armies, self.defender.armies)
+							else:
+								self.rps = RPS(self.screen, self.defender.armies, self.attacker.armies)
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins
 			pass
