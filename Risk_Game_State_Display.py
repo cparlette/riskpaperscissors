@@ -38,6 +38,20 @@ class Risk_Game_State_Display():
 			(self.surface.get_width() / 2 - x_offset, self.surface.get_height() / 2 - y_offset)
 		)
 
+		# Situational third line of text
+		situational_text = None
+		if self.risk_game.game_phase == "Place New Armies":
+			situational_text = "Remaining armies: "+str(self.risk_game.placable_armies)
+		if situational_text:
+			text_render = self.font.render(situational_text, 1, self.text_color)
+			text_render_size = self.font.size(situational_text)
+			x_offset = text_render_size[0] / 2
+			y_offset = text_render_size[1] / 2
+			self.surface.blit(
+				text_render, 
+				(self.surface.get_width() / 2 - x_offset, self.surface.get_height() * 3 / 4 - y_offset)
+			)
+
 	def draw(self):
 		self.surface.fill(self.bg_color)
 		self.insert_text()
