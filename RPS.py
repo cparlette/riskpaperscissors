@@ -5,6 +5,7 @@ class Player():
 	def __init__(self, lives):
 		self.choice = None
 		self.lives = lives
+		self.last_choice = None
 
 class RPS():
 	def __init__(self, screen, player_one_lives, player_two_lives):
@@ -15,7 +16,7 @@ class RPS():
 		self.last_result = None
 		#font stuff
 		self.font_type = "tahoma"
-		self.font_size = int(HEIGHT / 10)
+		self.font_size = int(HEIGHT / 14)
 
 	def showdown(self):
 		if self.player_one.choice == "rock":
@@ -45,6 +46,8 @@ class RPS():
 				self.player_two.lives -= 1
 			else:
 				self.last_result = "Tie - both chose scissors"
+		self.player_one.last_choice = self.player_one.choice
+		self.player_two.last_choice = self.player_two.choice
 		self.player_one.choice = None
 		self.player_two.choice = None
 
@@ -70,75 +73,56 @@ class RPS():
 		# no mouse in RPS (yet)
 		pass
 
+	def draw_text(self, font, surface, text, font_color, center_x, center_y):
+		rendered_text = font.render(text, 1, font_color)
+		render_size = font.size(text)
+		x_offset = render_size[0] / 2
+		y_offset = render_size[1] / 2
+		text_center_x = center_x - x_offset
+		text_center_y = center_y - y_offset
+		surface.blit(rendered_text, (text_center_x, text_center_y))
+
 	def draw(self):
 		self.surface.fill(GREEN)
 		font = pygame.font.SysFont(self.font_type, self.font_size)
 		# title
 		title_text = "Let's Play RPS!"
-		title = font.render(title_text, 1, BLACK)
-		render_size = font.size(title_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		title_center_x = WIDTH / 2 - x_offset
-		title_center_y = HEIGHT / 8 - y_offset
-		self.surface.blit(title, (title_center_x, title_center_y))
+		self.draw_text(font, self.surface, title_text, BLACK, WIDTH / 2, HEIGHT / 8)
 
 		# player one info
 		if self.player_one.choice:
-			player_one_text = "P1: "+self.player_one.choice
+			player_one_text = "Player 1 has chosen!"
 		else:
-			player_one_text = "P1 choose!"
-		text_one = font.render(player_one_text, 1, BLUE)
-		render_size = font.size(player_one_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		player_one_center_x = WIDTH / 4 - x_offset
-		player_one_center_y = HEIGHT / 2 - y_offset
-		self.surface.blit(text_one, (player_one_center_x, player_one_center_y))
+			player_one_text = "Player 1, choose!"
+		self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 1 / 4)
 
 		player_one_lives_text = "Lives: "+str(self.player_one.lives)
-		text_one_lives = font.render(player_one_lives_text, 1, BLUE)
-		render_size = font.size(player_one_lives_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		player_one_lives_center_x = WIDTH / 4 - x_offset
-		player_one_lives_center_y = HEIGHT * 5 / 8 - y_offset
-		self.surface.blit(text_one_lives, (player_one_lives_center_x, player_one_lives_center_y))
+		self.draw_text(font, self.surface, player_one_lives_text, BLUE, WIDTH / 4, HEIGHT * 3 / 8)
+
+		if self.player_one.last_choice:
+			one_last_choice_text = "Last: "+self.player_one.last_choice
+			self.draw_text(font, self.surface, one_last_choice_text, BLUE, WIDTH / 4, HEIGHT / 2)
 
 		# player two info
 		if self.player_two.choice:
-			player_two_text = "P2: "+self.player_two.choice
+			player_two_text = "Player 2 has chosen!"
 		else:
-			player_two_text = "P2 choose!"
-		text_two = font.render(player_two_text, 1, RED)
-		render_size = font.size(player_two_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		player_two_center_x = WIDTH * 3 / 4 - x_offset
-		player_two_center_y = HEIGHT / 2 - y_offset
-		self.surface.blit(text_two, (player_two_center_x, player_two_center_y))
+			player_two_text = "Player 2, choose!"
+		self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 1 / 4)
 
 		player_two_lives_text = "Lives: "+str(self.player_two.lives)
-		text_two_lives = font.render(player_two_lives_text, 1, RED)
-		render_size = font.size(player_two_lives_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		player_two_lives_center_x = WIDTH * 3 / 4 - x_offset
-		player_two_lives_center_y = HEIGHT * 5 / 8 - y_offset
-		self.surface.blit(text_two_lives, (player_two_lives_center_x, player_two_lives_center_y))
+		self.draw_text(font, self.surface, player_two_lives_text, RED, WIDTH * 3 / 4, HEIGHT * 3 / 8)
+
+		if self.player_two.last_choice:
+			two_last_choice_text = "Last: "+self.player_two.last_choice
+			self.draw_text(font, self.surface, two_last_choice_text, RED, WIDTH * 3 / 4, HEIGHT / 2)
 
 		#results
 		if self.last_result:
 			result_text = self.last_result
 		else:
 			result_text = "No games played yet"
-		result = font.render(result_text, 1, BLACK)
-		render_size = font.size(result_text)
-		x_offset = render_size[0] / 2
-		y_offset = render_size[1] / 2
-		result_center_x = WIDTH / 2 - x_offset
-		result_center_y = HEIGHT * 7 / 8 - y_offset
-		self.surface.blit(result, (result_center_x, result_center_y))
+		self.draw_text(font, self.surface, result_text, BLACK, WIDTH / 2, HEIGHT * 7 / 8)
 
 		self.screen.blit(self.surface, (0, 0))
 	
