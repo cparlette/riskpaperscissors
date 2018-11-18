@@ -16,7 +16,7 @@ class RPS():
 		self.last_result = None
 		#font stuff
 		self.font_type = "tahoma"
-		self.font_size = int(HEIGHT / 14)
+		self.font_size = int(HEIGHT / 16)
 
 	def showdown(self):
 		if self.player_one.choice == "rock":
@@ -94,28 +94,40 @@ class RPS():
 			player_one_text = "Player 1 has chosen!"
 		else:
 			player_one_text = "Player 1, choose!"
-		self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 1 / 4)
+		self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 4 / 16)
 
 		player_one_lives_text = "Lives: "+str(self.player_one.lives)
-		self.draw_text(font, self.surface, player_one_lives_text, BLUE, WIDTH / 4, HEIGHT * 3 / 8)
+		self.draw_text(font, self.surface, player_one_lives_text, BLUE, WIDTH / 4, HEIGHT * 6 / 16)
 
 		if self.player_one.last_choice:
 			one_last_choice_text = "Last: "+self.player_one.last_choice
-			self.draw_text(font, self.surface, one_last_choice_text, BLUE, WIDTH / 4, HEIGHT / 2)
+			self.draw_text(font, self.surface, one_last_choice_text, BLUE, WIDTH / 4, HEIGHT * 8 / 16)
+
+		one_rules_text_top = "A=Rock | S=Paper"
+		self.draw_text(font, self.surface, one_rules_text_top, BLUE, WIDTH / 4, HEIGHT * 11 / 16)
+
+		one_rules_text_bottom = "D=Scissors"
+		self.draw_text(font, self.surface, one_rules_text_bottom, BLUE, WIDTH / 4, HEIGHT * 12 / 16)
 
 		# player two info
 		if self.player_two.choice:
 			player_two_text = "Player 2 has chosen!"
 		else:
 			player_two_text = "Player 2, choose!"
-		self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 1 / 4)
+		self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 4 / 16)
 
 		player_two_lives_text = "Lives: "+str(self.player_two.lives)
-		self.draw_text(font, self.surface, player_two_lives_text, RED, WIDTH * 3 / 4, HEIGHT * 3 / 8)
+		self.draw_text(font, self.surface, player_two_lives_text, RED, WIDTH * 3 / 4, HEIGHT * 6 / 16)
 
 		if self.player_two.last_choice:
 			two_last_choice_text = "Last: "+self.player_two.last_choice
-			self.draw_text(font, self.surface, two_last_choice_text, RED, WIDTH * 3 / 4, HEIGHT / 2)
+			self.draw_text(font, self.surface, two_last_choice_text, RED, WIDTH * 3 / 4, HEIGHT * 8 / 16)
+
+		two_rules_text_top = "J=Rock | K=Paper"
+		self.draw_text(font, self.surface, two_rules_text_top, RED, WIDTH * 3 / 4, HEIGHT * 11 / 16)
+
+		two_rules_text_bottom = "L=Scissors"
+		self.draw_text(font, self.surface, two_rules_text_bottom, RED, WIDTH * 3 / 4, HEIGHT * 12 / 16)
 
 		#results
 		if self.last_result:
