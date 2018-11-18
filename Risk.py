@@ -97,7 +97,6 @@ class Risk():
 
 	def process_keydown(self, key):
 		# When a key is pressed during Risk
-		# Mostly just for testing purposes, maybe can do more with this
 		if key == pygame.K_r:
 			# Check the game phase , if during setup then randomize things
 			if self.game_phase == "Pick Starting Countries" and self.players[1].total_locations == 0:
@@ -116,6 +115,7 @@ class Risk():
 					self.locations[location.location_id].armies += 1
 					self.players[self.current_player].total_armies += 1
 					self.next_player()
+				self.situational_text = "Starting locations randomized"
 				self.next_phase()
 			elif self.game_phase == "Allocate All Armies":
 				# Randomly allocate the rest of the armies for each player
@@ -127,6 +127,7 @@ class Risk():
 					self.players[self.current_player].total_armies += 1
 					
 					self.next_player()
+				self.situational_text = "Armies randomly allocated"
 				self.next_phase()
 		elif self.rps:
 			self.rps.process_keydown(key)
@@ -137,6 +138,7 @@ class Risk():
 					self.attacker.armies = self.rps.player_one.lives
 					self.defender.armies = self.rps.player_two.lives
 					self.rps = None
+					self.situational_text = "P1 attack fails"
 					self.next_phase()
 				elif self.rps.player_two.lives == 0:
 					# Player one wins as attacker
@@ -149,6 +151,7 @@ class Risk():
 					self.players[1].controlled_locations.append(self.defender.location_id)
 					self.players[2].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
+					self.situational_text = "P1 attack successful"
 					self.next_phase()
 			else:
 				if self.rps.player_one.lives < 1:
@@ -162,12 +165,14 @@ class Risk():
 					self.players[2].controlled_locations.append(self.defender.location_id)
 					self.players[1].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
+					self.situational_text = "P2 attack successful"
 					self.next_phase()
 				elif self.rps.player_two.lives == 2:
 					# Player one wins as defender
 					self.attacker.armies = self.rps.player_two.lives
 					self.defender.armies = self.rps.player_one.lives
 					self.rps = None
+					self.situational_text = "P2 attack fails"
 					self.next_phase()
 
 	def next_player(self):
@@ -209,13 +214,14 @@ class Risk():
 		elif self.game_phase == "Place New Armies":
 			self.game_phase = "Choose Attacker"
 
-		# Always clean out the situational text when changing phases
-		self.situational_text = None
+		# Always clean out the situational text when changing phases?
+		# self.situational_text = None
 
 	def new_turn(self):
 		self.next_player()
 		self.placable_armies = 5
 		self.game_phase = "Place New Armies"
+		self.situational_text = None
 
 	def process_mouseclick(self, mouse_pos):
 		# mouse was clicked, do something
@@ -257,6 +263,7 @@ class Risk():
 			if self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1]):
 				self.new_turn()
 		elif self.game_phase == "Choose Defender":
+			self.situational_text = None
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
 					if location.owner != self.current_player:
