@@ -129,17 +129,25 @@ class RPS():
 		if self.show_intro:
 			# Display the fight intro
 			self.surface.blit(self.intro_image,(244,290))
+			intro_font = pygame.font.SysFont("tahoma", int(HEIGHT / 4))
+			self.draw_text(intro_font, self.surface, "FIGHT", BLACK, WIDTH / 2, HEIGHT / 4)
 			if pygame.time.get_ticks() - self.start_time > 1000:
 				self.show_intro = False
 		elif self.showdown_happening:
-			self.surface.blit(self.player_one.choice_image, (100,290))
-			self.surface.blit(self.player_two.choice_image, (600,290))
+			self.surface.blit(self.player_one.choice_image, (125,290))
+			self.surface.blit(self.player_two.choice_image, (625,290))
 			if self.loser == self.player_one:
-				self.surface.blit(self.red_arrow_image, (350, 290))
+				self.surface.blit(self.red_arrow_image, (375, 290))
+				winner_font = pygame.font.SysFont("tahoma", int(HEIGHT / 8))
+				self.draw_text(winner_font, self.surface, "WINNER", RED, WIDTH * 3 / 4, HEIGHT * 3 / 4)
 			elif self.loser == self.player_two:
-				self.surface.blit(self.blue_arrow_image, (350, 290))
+				self.surface.blit(self.blue_arrow_image, (375, 290))
+				winner_font = pygame.font.SysFont("tahoma", int(HEIGHT / 8))
+				self.draw_text(winner_font, self.surface, "WINNER", BLUE, WIDTH / 4, HEIGHT * 3 / 4)
 			else:
-				self.surface.blit(self.equals_image, (350, 290))
+				self.surface.blit(self.equals_image, (375, 290))
+				winner_font = pygame.font.SysFont("tahoma", int(HEIGHT / 8))
+				self.draw_text(winner_font, self.surface, "TIE", BLACK, WIDTH / 2, HEIGHT * 3 / 4)
 			if pygame.time.get_ticks() - self.showdown_start_time > 1000:
 				self.showdown_cleanup()
 		else:
