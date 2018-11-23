@@ -258,12 +258,14 @@ class Risk():
 		elif self.game_phase == "Choose Attacker":
 			for key, location in self.locations.items():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
-					if location.owner == self.current_player:
+					if location.owner == self.current_player and location.armies > 1:
 						self.attacker = location
 						location.is_chosen = True
 						self.next_phase()
-					else:
+					elif location.owner != self.current_player:
 						self.situational_text = "Not your territory!"
+					elif location.armies <= 1:
+						self.situational_text = "Not enough armies to attack!"
 			if self.end_turn_button.is_hovered(mouse_pos[0], mouse_pos[1]):
 				self.new_turn()
 		elif self.game_phase == "Choose Defender":
