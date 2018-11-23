@@ -139,7 +139,6 @@ class Risk():
 					self.defender.armies = self.rps.player_two.lives
 					self.rps = None
 					self.situational_text = "P1 attack fails"
-					self.next_phase()
 				elif self.rps.player_two.lives < 1:
 					# Player one wins as attacker
 					self.attacker.armies = 1
@@ -152,7 +151,6 @@ class Risk():
 					self.players[2].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
 					self.situational_text = "P1 attack successful"
-					self.next_phase()
 			else:
 				if self.rps.player_one.lives < 1:
 					# Player two wins as attacker
@@ -166,17 +164,18 @@ class Risk():
 					self.players[1].controlled_locations.remove(self.defender.location_id)
 					self.rps = None
 					self.situational_text = "P2 attack successful"
-					self.next_phase()
 				elif self.rps.player_two.lives < 2:
 					# Player one wins as defender
 					self.attacker.armies = self.rps.player_two.lives
 					self.defender.armies = self.rps.player_one.lives
 					self.rps = None
 					self.situational_text = "P2 attack fails"
-					self.next_phase()
 			if not self.rps:
 				# RPS game finished, do some cleanup
 				self.attacker.is_chosen = False
+				self.attacker = None
+				self.defender = None
+				self.next_phase()
 
 	def next_player(self):
 		if self.current_player == 1:
