@@ -133,14 +133,14 @@ class Risk():
 			self.rps.process_keydown(key)
 			# Check if the RPS game is over
 			if self.current_player == 1:
-				if self.rps.player_one.lives == 2:
+				if self.rps.player_one.lives < 2:
 					# Player two wins as defender
 					self.attacker.armies = self.rps.player_one.lives
 					self.defender.armies = self.rps.player_two.lives
 					self.rps = None
 					self.situational_text = "P1 attack fails"
 					self.next_phase()
-				elif self.rps.player_two.lives == 0:
+				elif self.rps.player_two.lives < 1:
 					# Player one wins as attacker
 					self.attacker.armies = 1
 					self.defender.armies = self.rps.player_one.lives - 1
@@ -167,7 +167,7 @@ class Risk():
 					self.rps = None
 					self.situational_text = "P2 attack successful"
 					self.next_phase()
-				elif self.rps.player_two.lives == 2:
+				elif self.rps.player_two.lives < 2:
 					# Player one wins as defender
 					self.attacker.armies = self.rps.player_two.lives
 					self.defender.armies = self.rps.player_one.lives
