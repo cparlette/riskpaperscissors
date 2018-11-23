@@ -174,6 +174,9 @@ class Risk():
 					self.rps = None
 					self.situational_text = "P2 attack fails"
 					self.next_phase()
+			if not self.rps:
+				# RPS game finished, do some cleanup
+				self.attacker.is_chosen = False
 
 	def next_player(self):
 		if self.current_player == 1:
@@ -257,6 +260,7 @@ class Risk():
 				if location.is_hovered(mouse_pos[0], mouse_pos[1]):
 					if location.owner == self.current_player:
 						self.attacker = location
+						location.is_chosen = True
 						self.next_phase()
 					else:
 						self.situational_text = "Not your territory!"
@@ -280,6 +284,7 @@ class Risk():
 						self.situational_text = "Can't attack yourself!"
 			if self.undo_button.is_hovered(mouse_pos[0], mouse_pos[1]):
 				self.game_phase = "Choose Attacker"
+				self.attacker.is_chosen = False
 				self.attacker = None
 		elif self.game_phase == "RPS":
 			# Time to play RPS to see who wins

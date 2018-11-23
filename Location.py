@@ -18,6 +18,7 @@ class Location():
 		self.font_size = int(self.height * 3 / 4)
 		self.font = pygame.font.SysFont("tahoma", self.font_size)
 		self.surface = pygame.Surface((self.width, self.height))
+		self.is_chosen = False
 		self.draw()
 
 	def insert_text(self):
@@ -38,7 +39,10 @@ class Location():
 			return False
 
 	def draw(self):
-		self.surface.fill(self.bg_color)
+		if self.is_chosen:
+			self.surface.fill(GOLD)
+		else:
+			self.surface.fill(self.bg_color)
 		self.insert_text()
 		self.risk_game.surface.blit(
 			self.surface, 
