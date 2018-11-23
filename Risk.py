@@ -131,51 +131,7 @@ class Risk():
 				self.next_phase()
 		elif self.rps:
 			self.rps.process_keydown(key)
-			# Check if the RPS game is over
-			if self.current_player == 1:
-				if self.rps.player_one.lives < 2:
-					# Player two wins as defender
-					self.attacker.armies = self.rps.player_one.lives
-					self.defender.armies = self.rps.player_two.lives
-					self.rps = None
-					self.situational_text = "P1 attack fails"
-				elif self.rps.player_two.lives < 1:
-					# Player one wins as attacker
-					self.attacker.armies = 1
-					self.defender.armies = self.rps.player_one.lives - 1
-					self.defender.owner = self.current_player
-					self.defender.bg_color = self.players[1].color
-					self.players[1].total_locations += 1
-					self.players[2].total_locations -= 1
-					self.players[1].controlled_locations.append(self.defender.location_id)
-					self.players[2].controlled_locations.remove(self.defender.location_id)
-					self.rps = None
-					self.situational_text = "P1 attack successful"
-			else:
-				if self.rps.player_one.lives < 1:
-					# Player two wins as attacker
-					self.attacker.armies = 1
-					self.defender.armies = self.rps.player_two.lives - 1
-					self.defender.owner = self.current_player
-					self.defender.bg_color = self.players[2].color
-					self.players[2].total_locations += 1
-					self.players[1].total_locations -= 1
-					self.players[2].controlled_locations.append(self.defender.location_id)
-					self.players[1].controlled_locations.remove(self.defender.location_id)
-					self.rps = None
-					self.situational_text = "P2 attack successful"
-				elif self.rps.player_two.lives < 2:
-					# Player one wins as defender
-					self.attacker.armies = self.rps.player_two.lives
-					self.defender.armies = self.rps.player_one.lives
-					self.rps = None
-					self.situational_text = "P2 attack fails"
-			if not self.rps:
-				# RPS game finished, do some cleanup
-				self.attacker.is_chosen = False
-				self.attacker = None
-				self.defender = None
-				self.next_phase()
+
 
 	def next_player(self):
 		if self.current_player == 1:
@@ -300,11 +256,59 @@ class Risk():
 			if self.placable_armies == 0:
 				self.next_phase()
 
-
+	def is_rps_game_over(self):
+		# Check if the RPS game is over
+		if self.current_player == 1:
+			if self.rps.player_one.lives < 2:
+				# Player two wins as defender
+				self.attacker.armies = self.rps.player_one.lives
+				self.defender.armies = self.rps.player_two.lives
+				self.rps = None
+				self.situational_text = "P1 attack fails"
+			elif self.rps.player_two.lives < 1:
+				# Player one wins as attacker
+				self.attacker.armies = 1
+				self.defender.armies = self.rps.player_one.lives - 1
+				self.defender.owner = self.current_player
+				self.defender.bg_color = self.players[1].color
+				self.players[1].total_locations += 1
+				self.players[2].total_locations -= 1
+				self.players[1].controlled_locations.append(self.defender.location_id)
+				self.players[2].controlled_locations.remove(self.defender.location_id)
+				self.rps = None
+				self.situational_text = "P1 attack successful"
+		else:
+			if self.rps.player_one.lives < 1:
+				# Player two wins as attacker
+				self.attacker.armies = 1
+				self.defender.armies = self.rps.player_two.lives - 1
+				self.defender.owner = self.current_player
+				self.defender.bg_color = self.players[2].color
+				self.players[2].total_locations += 1
+				self.players[1].total_locations -= 1
+				self.players[2].controlled_locations.append(self.defender.location_id)
+				self.players[1].controlled_locations.remove(self.defender.location_id)
+				self.rps = None
+				self.situational_text = "P2 attack successful"
+			elif self.rps.player_two.lives < 2:
+				# Player one wins as defender
+				self.attacker.armies = self.rps.player_two.lives
+				self.defender.armies = self.rps.player_one.lives
+				self.rps = None
+				self.situational_text = "P2 attack fails"
+		if not self.rps:
+			# RPS game finished, do some cleanup
+			self.attacker.is_chosen = False
+			self.attacker = None
+			self.defender = None
+			self.next_phase()
+			return True
+		else:
+			return False
 
 
 	def draw(self):
-		if self.rps:
+		if self.rps and not self.is_rps_game_over():
 			self.rps.draw()
 		else:
 			# Fill in background color

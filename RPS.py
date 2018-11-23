@@ -6,6 +6,7 @@ class Player():
 		self.choice = None
 		self.lives = lives
 		self.last_choice = None
+		self.choice_image = None
 
 class RPS():
 	def __init__(self, screen, player_one_lives, player_two_lives):
@@ -17,39 +18,77 @@ class RPS():
 		#font stuff
 		self.font_type = "tahoma"
 		self.font_size = int(HEIGHT / 16)
+		# Stuff for displaying intro
+		self.show_intro = True 
+		self.start_time = pygame.time.get_ticks()
+		self.intro_image = pygame.image.load('assets/fighting-icon-11.jpg')
+		# Store images at 300x300
+		self.rock_image = pygame.transform.scale(pygame.image.load('assets/rock-icon-png-13.jpg'), (300, 300))
+		self.paper_image = pygame.transform.scale(pygame.image.load('assets/paper-icon-9.jpg'), (300, 300))
+		self.scissors_image = pygame.transform.scale(pygame.image.load('assets/scissor-icon-12.jpg'), (300, 300))
+
+		# Showdown status
+		self.showdown_happening = False
+		self.showdown_start_time = None
+		self.loser = None
+
 
 	def showdown(self):
 		if self.player_one.choice == "rock":
+			self.player_one.choice_image = self.rock_image
 			if self.player_two.choice == "rock":
+				self.player_two.choice_image = self.rock_image
 				self.last_result = "Tie - both chose rock"
 			elif self.player_two.choice == "paper":
+				self.player_two.choice_image = self.paper_image
 				self.last_result = "Player 2 wins - P over R"
-				self.player_one.lives -= 1
+				self.loser = self.player_one
 			else:
+				self.player_two.choice_image = self.scissors_image
 				self.last_result = "Player 1 wins - R over S"
-				self.player_two.lives -= 1
+				self.loser = self.player_two
 		elif self.player_one.choice == "paper":
+			self.player_one.choice_image = self.paper_image
 			if self.player_two.choice == "rock":
+				self.player_two.choice_image = self.rock_image
 				self.last_result = "Player 1 wins - P over R"
-				self.player_two.lives -= 1
+				self.loser = self.player_two
 			elif self.player_two.choice == "paper":
+				self.player_two.choice_image = self.paper_image
 				self.last_result = "Tie - both chose paper"
 			else:
+				self.player_two.choice_image = self.scissors_image
 				self.last_result = "Player 2 wins - S over P"
-				self.player_one.lives -= 1
+				self.loser = self.player_one
 		else:
+			self.player_one.choice_image = self.scissors_image
 			if self.player_two.choice == "rock":
+				self.player_two.choice_image = self.rock_image
 				self.last_result = "Player 2 wins - R over S"
-				self.player_one.lives -= 1
+				self.loser = self.player_one
 			elif self.player_two.choice == "paper":
+				self.player_two.choice_image = self.paper_image
 				self.last_result = "Player 1 wins - S over P"
-				self.player_two.lives -= 1
+				self.loser = self.player_two
 			else:
+				self.player_two.choice_image = self.scissors_image
 				self.last_result = "Tie - both chose scissors"
+		self.showdown_happening = True
+		self.showdown_start_time = pygame.time.get_ticks()
+		
+
+	def showdown_cleanup(self):
 		self.player_one.last_choice = self.player_one.choice
 		self.player_two.last_choice = self.player_two.choice
 		self.player_one.choice = None
 		self.player_two.choice = None
+		self.showdown_happening = False
+		self.showdown_start_time = None
+		self.player_one.choice_image = None
+		self.player_two.choice_image = None
+		if self.loser:
+			self.loser.lives -= 1
+			self.loser = None
 
 
 	def process_keydown(self, key):
@@ -84,57 +123,68 @@ class RPS():
 
 	def draw(self):
 		self.surface.fill(SHADOW)
-		font = pygame.font.SysFont(self.font_type, self.font_size)
-		# title
-		title_text = "Let's Play RPS!"
-		self.draw_text(font, self.surface, title_text, BLACK, WIDTH / 2, HEIGHT / 8)
-
-		# player one info
-		if self.player_one.choice:
-			player_one_text = "Player 1 has chosen!"
+		if self.show_intro:
+			# Display the fight intro
+			self.surface.blit(self.intro_image,(244,290))
+			if pygame.time.get_ticks() - self.start_time > 1000:
+				self.show_intro = False
+		elif self.showdown_happening:
+			self.surface.blit(self.player_one.choice_image, (100,290))
+			self.surface.blit(self.player_two.choice_image, (600,290))
+			if pygame.time.get_ticks() - self.showdown_start_time > 1000:
+				self.showdown_cleanup()
 		else:
-			player_one_text = "Player 1, choose!"
-		self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 4 / 16)
+			font = pygame.font.SysFont(self.font_type, self.font_size)
+			# title
+			title_text = "Let's Play RPS!"
+			self.draw_text(font, self.surface, title_text, BLACK, WIDTH / 2, HEIGHT / 8)
 
-		player_one_lives_text = "Lives: "+str(self.player_one.lives)
-		self.draw_text(font, self.surface, player_one_lives_text, BLUE, WIDTH / 4, HEIGHT * 6 / 16)
+			# player one info
+			if self.player_one.choice:
+				player_one_text = "Player 1 has chosen!"
+			else:
+				player_one_text = "Player 1, choose!"
+			self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 4 / 16)
 
-		if self.player_one.last_choice:
-			one_last_choice_text = "Last: "+self.player_one.last_choice
-			self.draw_text(font, self.surface, one_last_choice_text, BLUE, WIDTH / 4, HEIGHT * 8 / 16)
+			player_one_lives_text = "Lives: "+str(self.player_one.lives)
+			self.draw_text(font, self.surface, player_one_lives_text, BLUE, WIDTH / 4, HEIGHT * 6 / 16)
 
-		one_rules_text_top = "A=Rock | S=Paper"
-		self.draw_text(font, self.surface, one_rules_text_top, BLUE, WIDTH / 4, HEIGHT * 11 / 16)
+			if self.player_one.last_choice:
+				one_last_choice_text = "Last: "+self.player_one.last_choice
+				self.draw_text(font, self.surface, one_last_choice_text, BLUE, WIDTH / 4, HEIGHT * 8 / 16)
 
-		one_rules_text_bottom = "D=Scissors"
-		self.draw_text(font, self.surface, one_rules_text_bottom, BLUE, WIDTH / 4, HEIGHT * 12 / 16)
+			one_rules_text_top = "A=Rock | S=Paper"
+			self.draw_text(font, self.surface, one_rules_text_top, BLUE, WIDTH / 4, HEIGHT * 11 / 16)
 
-		# player two info
-		if self.player_two.choice:
-			player_two_text = "Player 2 has chosen!"
-		else:
-			player_two_text = "Player 2, choose!"
-		self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 4 / 16)
+			one_rules_text_bottom = "D=Scissors"
+			self.draw_text(font, self.surface, one_rules_text_bottom, BLUE, WIDTH / 4, HEIGHT * 12 / 16)
 
-		player_two_lives_text = "Lives: "+str(self.player_two.lives)
-		self.draw_text(font, self.surface, player_two_lives_text, RED, WIDTH * 3 / 4, HEIGHT * 6 / 16)
+			# player two info
+			if self.player_two.choice:
+				player_two_text = "Player 2 has chosen!"
+			else:
+				player_two_text = "Player 2, choose!"
+			self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 4 / 16)
 
-		if self.player_two.last_choice:
-			two_last_choice_text = "Last: "+self.player_two.last_choice
-			self.draw_text(font, self.surface, two_last_choice_text, RED, WIDTH * 3 / 4, HEIGHT * 8 / 16)
+			player_two_lives_text = "Lives: "+str(self.player_two.lives)
+			self.draw_text(font, self.surface, player_two_lives_text, RED, WIDTH * 3 / 4, HEIGHT * 6 / 16)
 
-		two_rules_text_top = "J=Rock | K=Paper"
-		self.draw_text(font, self.surface, two_rules_text_top, RED, WIDTH * 3 / 4, HEIGHT * 11 / 16)
+			if self.player_two.last_choice:
+				two_last_choice_text = "Last: "+self.player_two.last_choice
+				self.draw_text(font, self.surface, two_last_choice_text, RED, WIDTH * 3 / 4, HEIGHT * 8 / 16)
 
-		two_rules_text_bottom = "L=Scissors"
-		self.draw_text(font, self.surface, two_rules_text_bottom, RED, WIDTH * 3 / 4, HEIGHT * 12 / 16)
+			two_rules_text_top = "J=Rock | K=Paper"
+			self.draw_text(font, self.surface, two_rules_text_top, RED, WIDTH * 3 / 4, HEIGHT * 11 / 16)
 
-		#results
-		if self.last_result:
-			result_text = self.last_result
-		else:
-			result_text = "No games played yet"
-		self.draw_text(font, self.surface, result_text, BLACK, WIDTH / 2, HEIGHT * 7 / 8)
+			two_rules_text_bottom = "L=Scissors"
+			self.draw_text(font, self.surface, two_rules_text_bottom, RED, WIDTH * 3 / 4, HEIGHT * 12 / 16)
+
+			#results
+			if self.last_result:
+				result_text = self.last_result
+			else:
+				result_text = "No games played yet"
+			self.draw_text(font, self.surface, result_text, BLACK, WIDTH / 2, HEIGHT * 7 / 8)
 
 		self.screen.blit(self.surface, (0, 0))
 	
