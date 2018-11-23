@@ -22,10 +22,13 @@ class RPS():
 		self.show_intro = True 
 		self.start_time = pygame.time.get_ticks()
 		self.intro_image = pygame.image.load('assets/fighting-icon-11.jpg')
-		# Store images at 300x300
-		self.rock_image = pygame.transform.scale(pygame.image.load('assets/rock-icon-png-13.jpg'), (300, 300))
-		self.paper_image = pygame.transform.scale(pygame.image.load('assets/paper-icon-9.jpg'), (300, 300))
-		self.scissors_image = pygame.transform.scale(pygame.image.load('assets/scissor-icon-12.jpg'), (300, 300))
+		# Store images at 250x250
+		self.rock_image = pygame.transform.scale(pygame.image.load('assets/rock-icon-png-13.jpg'), (250, 250))
+		self.paper_image = pygame.transform.scale(pygame.image.load('assets/paper-icon-9.jpg'), (250, 250))
+		self.scissors_image = pygame.transform.scale(pygame.image.load('assets/scissor-icon-12.jpg'), (250, 250))
+		self.blue_arrow_image = pygame.transform.scale(pygame.image.load('assets/blue-left-arrow-png-14.png'), (250, 250))
+		self.red_arrow_image = pygame.transform.scale(pygame.image.load('assets/red-arrow-right-pointing-5.png'), (250, 250))
+		self.equals_image = pygame.transform.scale(pygame.image.load('assets/equal-sign-icon-25.jpg'), (250, 250))
 
 		# Showdown status
 		self.showdown_happening = False
@@ -131,6 +134,12 @@ class RPS():
 		elif self.showdown_happening:
 			self.surface.blit(self.player_one.choice_image, (100,290))
 			self.surface.blit(self.player_two.choice_image, (600,290))
+			if self.loser == self.player_one:
+				self.surface.blit(self.red_arrow_image, (350, 290))
+			elif self.loser == self.player_two:
+				self.surface.blit(self.blue_arrow_image, (350, 290))
+			else:
+				self.surface.blit(self.equals_image, (350, 290))
 			if pygame.time.get_ticks() - self.showdown_start_time > 1000:
 				self.showdown_cleanup()
 		else:
