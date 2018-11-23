@@ -13,7 +13,7 @@ class Risk():
 		self.screen = screen
 		self.surface = pygame.Surface((WIDTH, HEIGHT))
 		self.img = pygame.transform.scale(
-			pygame.image.load('2000px-Risk_board.svg.png'),
+			pygame.image.load('assets/2000px-Risk_board.svg.png'),
 			(1000,692)
 		)
 		self.locations = {}
