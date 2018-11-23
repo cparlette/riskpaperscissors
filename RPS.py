@@ -83,7 +83,7 @@ class RPS():
 		surface.blit(rendered_text, (text_center_x, text_center_y))
 
 	def draw(self):
-		self.surface.fill(GREEN)
+		self.surface.fill(SHADOW)
 		font = pygame.font.SysFont(self.font_type, self.font_size)
 		# title
 		title_text = "Let's Play RPS!"
