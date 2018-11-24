@@ -22,7 +22,8 @@ def main():
 	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (HEIGHT * 5 / 6))
  
 	settings_menu = Menu(screen, "Settings", WHITE, "tahoma", BLACK)
-	settings_menu.add_button("Main Menu", 200, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT / 2)
+	settings_menu.add_textbox("Player 1 Name", "Player1", WIDTH / 2, HEIGHT * 2 / 6)
+	settings_menu.add_button("Main Menu", 200, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT * 5 / 6)
 
 	help_menu = Menu(screen, "Help", WHITE, "tahoma", BLACK)
 	help_menu.add_button("Main Menu", 200, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT / 2)
