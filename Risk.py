@@ -11,7 +11,7 @@ from Button import Button
 class Risk():
 	def __init__(self, screen):
 		self.screen = screen
-		self.surface = pygame.Surface((WIDTH, HEIGHT))
+		self.surface = pygame.Surface((WIDTH, HEIGHT)).convert()
 		self.img = pygame.transform.scale(
 			pygame.image.load('assets/2000px-Risk_board.svg.png'),
 			(1000,692)

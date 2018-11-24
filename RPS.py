@@ -11,7 +11,7 @@ class Player():
 class RPS():
 	def __init__(self, screen, player_one_lives, player_two_lives):
 		self.screen = screen
-		self.surface = pygame.Surface((WIDTH, HEIGHT))
+		self.surface = pygame.Surface((WIDTH, HEIGHT)).convert()
 		self.player_one = Player(player_one_lives)
 		self.player_two = Player(player_two_lives)
 		self.last_result = None
@@ -21,7 +21,7 @@ class RPS():
 		# Stuff for displaying intro
 		self.show_intro = True 
 		self.start_time = pygame.time.get_ticks()
-		self.intro_image = pygame.image.load('assets/fighting-icon-11.jpg')
+		self.intro_image = pygame.image.load('assets/fighting-icon-11.jpg').convert_alpha()
 		# Store images at 250x250
 		self.rock_image = pygame.transform.scale(pygame.image.load('assets/rock-icon-png-13.jpg'), (250, 250))
 		self.paper_image = pygame.transform.scale(pygame.image.load('assets/paper-icon-9.jpg'), (250, 250))
