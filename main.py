@@ -16,13 +16,21 @@ def main():
 
 	### Menu Creation ###
 	main_menu = Menu(screen, "Risk Paper Scissors!", WHITE, "tahoma", BLACK)
-	main_menu.add_button("Risk", 200, 100, WHITE, str("Risk"), BLACK, WIDTH / 2, (2 * HEIGHT / 5))
-	main_menu.add_button("RPS", 200, 100, WHITE, str("RPS"), BLACK, WIDTH / 2, (3 * HEIGHT / 5))
-	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (4 * HEIGHT / 5))
+	main_menu.add_button("Risk", 200, 100, WHITE, str("Risk"), BLACK, WIDTH / 2, (HEIGHT * 2 / 5))
+	#main_menu.add_button("RPS", 200, 100, WHITE, str("RPS"), BLACK, WIDTH / 2, (3 * HEIGHT / 5))
+	main_menu.add_button("Settings", 200, 100, WHITE, str("Settings"), BLACK, WIDTH / 4, (HEIGHT * 3 / 5))
+	main_menu.add_button("Help", 200, 100, WHITE, str("Help"), BLACK, (WIDTH * 3 / 4), (HEIGHT * 3 / 5))
+	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (HEIGHT * 4 / 5))
  
+	settings_menu = Menu(screen, "Settings", WHITE, "tahoma", BLACK)
+	settings_menu.add_button("Main Menu", 300, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT / 2)
+
+	help_menu = Menu(screen, "Help", WHITE, "tahoma", BLACK)
+	help_menu.add_button("Main Menu", 300, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT / 2)
+
 	### Game Init ###
 	risk = Risk(screen)
-	rps = RPS(screen, 5, 5)
+	#rps = RPS(screen, 5, 5)
 	game = None
 
 	# Assign starting menu (set to None for no starting menu)
@@ -53,9 +61,10 @@ def main():
 					elif action == "Risk":
 						menu = None
 						game = risk
-					elif action == "RPS":
-						menu = None
-						game = rps
+					elif action == "Settings":
+						menu = settings_menu
+					elif action == "Help":
+						menu = help_menu
 					elif action == "Main Menu":
 						menu = main_menu
 			else:
