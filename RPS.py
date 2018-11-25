@@ -2,18 +2,19 @@ from constants import *
 import pygame
 
 class Player():
-	def __init__(self, lives):
+	def __init__(self, name, lives):
 		self.choice = None
 		self.lives = lives
+		self.name = name
 		self.last_choice = None
 		self.choice_image = None
 
 class RPS():
-	def __init__(self, screen, player_one_lives, player_two_lives):
+	def __init__(self, screen, player_one_name, player_one_lives, player_two_name, player_two_lives):
 		self.screen = screen
 		self.surface = pygame.Surface((WIDTH, HEIGHT)).convert()
-		self.player_one = Player(player_one_lives)
-		self.player_two = Player(player_two_lives)
+		self.player_one = Player(player_one_name, player_one_lives)
+		self.player_two = Player(player_two_name, player_two_lives)
 		self.last_result = None
 		#font stuff
 		self.font_type = "tahoma"
@@ -130,7 +131,10 @@ class RPS():
 			# Display the fight intro
 			self.surface.blit(self.intro_image,(244,290))
 			intro_font = pygame.font.SysFont("tahoma", int(HEIGHT / 4))
+			name_intro_font = pygame.font.SysFont("tahoma", int(HEIGHT / 16))
 			self.draw_text(intro_font, self.surface, "FIGHT", BLACK, WIDTH / 2, HEIGHT / 4)
+			self.draw_text(name_intro_font, self.surface, self.player_one.name, BLUE, WIDTH / 4, HEIGHT * 3 / 4)
+			self.draw_text(name_intro_font, self.surface, self.player_two.name, RED, WIDTH * 3 / 4, HEIGHT * 3 / 4)
 			if pygame.time.get_ticks() - self.start_time > 1000:
 				self.show_intro = False
 		elif self.showdown_happening:
@@ -158,9 +162,9 @@ class RPS():
 
 			# player one info
 			if self.player_one.choice:
-				player_one_text = "Player 1 has chosen!"
+				player_one_text = self.player_one.name + " has chosen!"
 			else:
-				player_one_text = "Player 1, choose!"
+				player_one_text = self.player_one.name
 			self.draw_text(font, self.surface, player_one_text, BLUE, WIDTH / 4, HEIGHT * 4 / 16)
 
 			player_one_lives_text = "Lives: "+str(self.player_one.lives)
@@ -178,9 +182,9 @@ class RPS():
 
 			# player two info
 			if self.player_two.choice:
-				player_two_text = "Player 2 has chosen!"
+				player_two_text = self.player_two.name + " has chosen!"
 			else:
-				player_two_text = "Player 2, choose!"
+				player_two_text = self.player_two.name
 			self.draw_text(font, self.surface, player_two_text, RED, WIDTH * 3 / 4, HEIGHT * 4 / 16)
 
 			player_two_lives_text = "Lives: "+str(self.player_two.lives)

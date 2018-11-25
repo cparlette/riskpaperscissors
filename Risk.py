@@ -232,9 +232,9 @@ class Risk():
 							self.defender = location
 							self.next_phase()
 							if self.current_player == 1:
-								self.rps = RPS(self.screen, self.attacker.armies, self.defender.armies)
+								self.rps = RPS(self.screen, self.attacker.name, self.attacker.armies, self.defender.name, self.defender.armies)
 							else:
-								self.rps = RPS(self.screen, self.defender.armies, self.attacker.armies)
+								self.rps = RPS(self.screen, self.defender.name, self.defender.armies, self.attacker.name, self.attacker.armies)
 						else:
 							self.situational_text = "Not a connected territory"
 					else:
