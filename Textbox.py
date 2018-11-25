@@ -38,11 +38,11 @@ class Textbox():
 				return True
 		return False
 
-	def process_keydown(self, key):
-		if key == pygame.K_BACKSPACE:
+	def process_keydown(self, event):
+		if event.key == pygame.K_BACKSPACE:
 			self.text = self.text[:-1]
 		else:
-			self.text += pygame.key.name(key)
+			self.text += event.unicode
 
 	def draw_label(self):
 		self.surface.fill(self.label_bgcolor, self.label_rect)

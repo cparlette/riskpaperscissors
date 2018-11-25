@@ -43,12 +43,12 @@ class Menu():
 					return True 
 		return False
 
-	def process_keydown(self, key):
+	def process_keydown(self, event):
 		if self.textbox_focus:
-			if key == pygame.K_RETURN:
+			if event.key == pygame.K_RETURN:
 				self.textbox_focus = None
 			else:
-				self.textbox_focus.process_keydown(key)
+				self.textbox_focus.process_keydown(event)
  
 	def draw(self):
 		""" Draw the menu surface and then blit to screen """

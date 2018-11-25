@@ -59,7 +59,7 @@ def main():
 						else:
 							menu = main_menu
 					elif menu == settings_menu:
-						menu.process_keydown(event.key)
+						menu.process_keydown(event)
 				elif event.type == pygame.MOUSEBUTTONUP and menu:
 					action = menu.is_button_clicked(mouse_pos)
 					textbox_clicked = menu.is_textbox_clicked(mouse_pos)
