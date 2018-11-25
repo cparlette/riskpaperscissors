@@ -40,6 +40,7 @@ class Menu():
 			for textbox in self.textboxes:
 				if textbox.is_hovered(mouse_pos[0], mouse_pos[1]):
 					self.textbox_focus = textbox
+					textbox.cursor_visible = True
 					return True 
 		return False
 

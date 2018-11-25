@@ -1,6 +1,8 @@
 from constants import *
 import pygame
 
+# cursor stuff from https://github.com/Nearoo/pygame-text-input/blob/master/pygame_textinput.py
+
 class Textbox():
 	def __init__(self, menu, label, text, center_x, center_y, label_bgcolor):
 		self.menu = menu
@@ -23,10 +25,11 @@ class Textbox():
 		self.surface = pygame.Surface((self.width, self.height))
 
 		# stuff from https://github.com/Nearoo/pygame-text-input/blob/master/pygame_textinput.py
-		#self.cursor_surface = pygame.Surface((int(self.font_size/20+1), self.font_size))
-		#self.cursor_surface.fill(cursor_color)
-		#self.cursor_position = len(self.text)
-		#self.cursor_visible = True
+		self.cursor_color = (0, 0, 1)
+		self.cursor_surface = pygame.Surface((int(self.font_size/20+1), self.font_size))
+		self.cursor_surface.fill(self.cursor_color)
+		self.cursor_position = len(self.text)
+		self.cursor_visible = False
 		#self.cursor_switch_ms = 500
 		#self.cursor_ms_counter = 0
 
@@ -41,8 +44,10 @@ class Textbox():
 	def process_keydown(self, event):
 		if event.key == pygame.K_BACKSPACE:
 			self.text = self.text[:-1]
+			self.cursor_position = max(self.cursor_position - 1, 0)
 		else:
 			self.text += event.unicode
+			self.cursor_position += len(event.unicode)
 
 	def draw_label(self):
 		self.surface.fill(self.label_bgcolor, self.label_rect)
@@ -65,4 +70,10 @@ class Textbox():
 		#self.surface.fill(GREEN)
 		self.draw_label()
 		self.draw_text()
+		if self.cursor_visible:
+			cursor_x_pos = self.font.size(self.text[:self.cursor_position])[0]
+			# Without this, the cursor is invisible when self.cursor_position > 0:
+			if self.cursor_position > 0:
+				cursor_x_pos -= self.cursor_surface.get_width()
+			self.surface.blit(self.cursor_surface, (self.surface.get_width() / 2 + cursor_x_pos + 10, (self.height - self.cursor_surface.get_height()) / 2))
 		self.menu.surface.blit(self.surface, (self.center_x - self.width / 2, self.center_y - self.height / 2))
