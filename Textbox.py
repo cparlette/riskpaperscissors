@@ -30,8 +30,6 @@ class Textbox():
 		self.cursor_surface.fill(self.cursor_color)
 		self.cursor_position = len(self.text)
 		self.cursor_visible = False
-		#self.cursor_switch_ms = 500
-		#self.cursor_ms_counter = 0
 
 		self.draw()
 
@@ -53,7 +51,6 @@ class Textbox():
 		self.surface.fill(self.label_bgcolor, self.label_rect)
 		label_render = self.font.render(self.label, 1, self.label_color)
 		label_render_size = self.font.size(self.label)
-		#x_offset = label_render_size[0] / 2
 		y_offset = label_render_size[1] / 2
 		self.surface.blit(label_render, (5, self.surface.get_height() / 2 - y_offset))
 
@@ -61,13 +58,10 @@ class Textbox():
 		self.surface.fill(self.text_bgcolor, self.text_rect)
 		text_render = self.font.render(self.text, 1, self.text_color)
 		text_render_size = self.font.size(self.text)
-		x_offset = text_render_size[0] / 2
 		y_offset = text_render_size[1] / 2
-		#pygame.draw.rect(self.surface, self.text_bgcolor, self.text_rect, 0)
 		self.surface.blit(text_render, (self.surface.get_width() / 2 + 5, self.surface.get_height() / 2 - y_offset))
 
 	def draw(self):
-		#self.surface.fill(GREEN)
 		self.draw_label()
 		self.draw_text()
 		if self.cursor_visible:

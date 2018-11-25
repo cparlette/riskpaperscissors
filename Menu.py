@@ -47,6 +47,7 @@ class Menu():
 	def process_keydown(self, event):
 		if self.textbox_focus:
 			if event.key == pygame.K_RETURN:
+				self.textbox_focus.cursor_visible = False
 				self.textbox_focus = None
 			else:
 				self.textbox_focus.process_keydown(event)
