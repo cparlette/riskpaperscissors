@@ -9,7 +9,7 @@ from Button import Button
 
 
 class Risk():
-	def __init__(self, screen):
+	def __init__(self, screen, player1_name, player2_name):
 		self.screen = screen
 		self.surface = pygame.Surface((WIDTH, HEIGHT)).convert()
 		self.img = pygame.transform.scale(
@@ -71,8 +71,8 @@ class Risk():
 
 		# Set up players, 2 for now
 		self.players = {}
-		self.players[1] = Risk_Player(self, 1, "Player1", LIGHTBLUE, 150, 771)
-		self.players[2] = Risk_Player(self, 2, "Player2", RED, 850, 771)
+		self.players[1] = Risk_Player(self, 1, player1_name, LIGHTBLUE, 150, 771)
+		self.players[2] = Risk_Player(self, 2, player2_name, RED, 850, 771)
 		self.current_player = 1
 		self.game_phase = "Pick Starting Countries"
 		self.attacker = None

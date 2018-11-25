@@ -14,6 +14,10 @@ def main():
 	music = RPS_Music()
 	music.play()
 
+	# Config settings
+	player1_name = "Player1"
+	player2_name = "Player2"
+
 	### Menu Creation ###
 	main_menu = Menu(screen, "Risk Paper Scissors!", WHITE, "tahoma", BLACK)
 	main_menu.add_button("Risk", 200, 100, WHITE, str("Risk"), BLACK, WIDTH / 2, (HEIGHT * 2 / 6))
@@ -22,14 +26,15 @@ def main():
 	main_menu.add_button("Quit", 200, 100, WHITE, str("Quit"), BLACK, WIDTH / 2, (HEIGHT * 5 / 6))
  
 	settings_menu = Menu(screen, "Settings", WHITE, "tahoma", BLACK)
-	settings_menu.add_textbox("Player 1 Name", "Player1", WIDTH / 2, HEIGHT * 2 / 6)
+	settings_menu.add_textbox("Player 1 Name", player1_name, WIDTH / 2, HEIGHT * 2 / 6, BLUE)
+	settings_menu.add_textbox("Player 2 Name", player2_name, WIDTH / 2, HEIGHT * 3 / 6, RED)
 	settings_menu.add_button("Main Menu", 200, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT * 5 / 6)
 
 	help_menu = Menu(screen, "Help", WHITE, "tahoma", BLACK)
 	help_menu.add_button("Main Menu", 200, 100, WHITE, str("Main Menu"), BLACK, WIDTH / 2, HEIGHT / 2)
 
 	### Game Init ###
-	risk = Risk(screen)
+	#risk = Risk(screen)
 	game = None
 
 	# Assign starting menu (set to None for no starting menu)
@@ -53,13 +58,18 @@ def main():
 							done = True
 						else:
 							menu = main_menu
+					elif menu == settings_menu:
+						menu.process_keydown(event.key)
 				elif event.type == pygame.MOUSEBUTTONUP and menu:
 					action = menu.is_button_clicked(mouse_pos)
+					textbox_clicked = menu.is_textbox_clicked(mouse_pos)
 					if action == "Quit":
 						done = True
 					elif action == "Risk":
+						player1_name = settings_menu.textboxes[0].text
+						player2_name = settings_menu.textboxes[1].text
 						menu = None
-						game = risk
+						game = Risk(screen, player1_name, player2_name)
 					elif action == "Settings":
 						menu = settings_menu
 					elif action == "Help":

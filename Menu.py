@@ -16,15 +16,16 @@ class Menu():
 		self.surface = pygame.Surface((WIDTH, HEIGHT))
 		self.buttons = []
 		self.textboxes = []
+		self.textbox_focus = None
  
 	def add_button(self, action, width, height, bg_color, text, text_color, center_x, center_y):
 		""" Add a button to the menu """
 		new_button = Button(self, action, width, height, bg_color, text, self.font_type, text_color, center_x, center_y)
 		self.buttons.append(new_button)
 
-	def add_textbox(self, label, text, center_x, center_y):
+	def add_textbox(self, label, text, center_x, center_y, label_bgcolor):
 		""" Add a button to the menu """
-		new_textbox = Textbox(self, label, text, center_x, center_y)
+		new_textbox = Textbox(self, label, text, center_x, center_y, label_bgcolor)
 		self.textboxes.append(new_textbox)
  
 	def is_button_clicked(self, mouse_pos):
@@ -33,6 +34,21 @@ class Menu():
 				return button.get_action()
 		action = "None"
 		return action
+
+	def is_textbox_clicked(self, mouse_pos):
+		if not self.textbox_focus:
+			for textbox in self.textboxes:
+				if textbox.is_hovered(mouse_pos[0], mouse_pos[1]):
+					self.textbox_focus = textbox
+					return True 
+		return False
+
+	def process_keydown(self, key):
+		if self.textbox_focus:
+			if key == pygame.K_RETURN:
+				self.textbox_focus = None
+			else:
+				self.textbox_focus.process_keydown(key)
  
 	def draw(self):
 		""" Draw the menu surface and then blit to screen """
